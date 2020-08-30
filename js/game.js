@@ -13,7 +13,7 @@ const Game = {
     reward: undefined,
     rewardImgSrc: [],
     background: undefined,
-    obstacles: [],
+    obstaclesArray: [],
     obstaclesImgSrc: [],
     framesCounter: 0,
     intervalId: undefined,
@@ -54,14 +54,15 @@ const Game = {
     startGame() {
 
         this.player = new Player(this.ctx, this.canvasSize, this.keys, this.speed, this.width, this.height, this.imgPlayerSrc)
-        this.obstacles = new Obstacles(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc)
+        this.obstacles = new Obstacle(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc)
         this.background = new Background(this.ctx, this.canvasSize, this.background, this.speed, this.width, this.height, this.imgBackSrc)
         this.reward = new Rewards(this.ctx, this.canvasSize, this.reward, this.speed, this.width, this.height, this.player, this.imgRewrdSrc)
         this.interval = setInterval(() => {
+            this.obstaclesArray.forEach(obstacle => obstacle.drawObst())
             this.clearCanvas()
             this.drawAll()
             this.player.setEvents()
-            
+
 
 
 
@@ -80,10 +81,24 @@ const Game = {
 
     },
 
+    createObstacle() {
+        this.obstacle.push(new ObsFromRight(this.ctx,
+            this.speed,
+            this.canvasWidth,
+            this.canvasHeight,
+            obstMaxGap,
+            obstMinGap,
+            obstMinSize,
+            obstMaxSize,
+            obsStartingPoint,
+            setSizeHorizontal))
+
+    }
+
     drawAll() {
         this.background.drawBack()
         this.player.drawPlayer()
-        this.obstacles.drawObst()
+        obstacle.drawObst()
         this.reward.drawRewrd()
 
     },

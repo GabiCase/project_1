@@ -56,7 +56,7 @@ class Player {
                     break;
             }
         })
-        
+
     }
 
 
@@ -78,7 +78,7 @@ class Player {
             this.playerPos.y > 0 ? this.playerPos.y = this.playerPos.y - 1 : null
         }
 
-        
+
 
     }
 

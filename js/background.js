@@ -15,7 +15,7 @@ class Background {
             h: 100
         }
 
-        
+
 
     }
     drawBack() {

@@ -1,13 +1,19 @@
-class Obstacles {
+class Obstacle {
     constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, imgObstSrc) {
         this.ctx = ctx
         this.canvasSize = canvasSize
         this.speed = speed
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
+        this.obstMaxGap = 4
+        this.obstMinGap = 2
         this.imgObstSrc = imgObstSrc
         this.imageInstance = new Image()
         this.imageInstance.src = `./images/${this.imgObstSrc}`
+        this.obsStartingPoint = {
+            w: 0,
+            x: 0
+        }
         //Dentro de este array hay que hacer un push de un nuevo elemento
         //cada X segundos, siendo X un espectro predefinido
         this.obstacleArray = []
@@ -21,9 +27,7 @@ class Obstacles {
             h: 0
         }
         // gap es la diferencia en segundos entre obstaculos
-        this.obstMaxGap = 4
 
-        this.obstMinGap = 2
 
         this.obstSize = {
 
@@ -43,13 +47,13 @@ class Obstacles {
     //     console.log(this.canvasHeight)
     // }
 
-    setSizeHorizontal() {
+    setLimitHorizontal() {
         this.obstMaxSize.w = 100
         this.obstMaxSize.h = 30
         this.obstMinSize.w = 80
         this.obstMinSize.h = 20
     }
-    setSizeVertical() {
+    setLimitVertical() {
         this.obstMaxSize.w = 30
         this.obstMaxSize.h = 100
         this.obstMinSize.w = 20
@@ -59,22 +63,40 @@ class Obstacles {
 
 
 
-    moveObstFromRight() {
-        this.obstacleArray[0].x -= 1
+    // moveObstFromRight() {
+    //     this.obstacleArray[0].x -= 1
+
+    // }
+
+
+
+    setSizeObst(originSide) {
+        switch (originSide) {
+            case this.originSide === "right":
+
+                setLimitHorizontal();
+                //como consecuencia:
+                //   this.obstMaxSize.w = 100
+                //   this.obstMaxSize.h = 30
+                //   this.obstMinSize.w = 80
+                //   this.obstMinSize.h = 20;
+                break;
+            case this.originSide === "left":
+                setLimitHorizontal();
+                break;
+            case this.originSide === "top":
+                setLimitVertical();
+                break;
+            case this.originSide === "bottom":
+                setLimitVertical();
+                break;
+
+        }
 
     }
 
-    drawObst() {
-        this.drawObstHorizontal()
-        this.drawObstVertical()
 
-    }
 
-    drawObstHorizontal() {
-        console.log("primera")
-    }
-
-    drawObstVertical() {}
 
 
 
@@ -83,69 +105,66 @@ class Obstacles {
 
 }
 
-class ObsFromRight extends Obstacles {
-    constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize) {
-        super(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize)
+class ObsFromRight extends Obstacle {
+    constructor(ctx, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, obsStartingPoint, setSizeHorizontal) {
+        super(ctx, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, obsStartingPoint, setSizeHorizontal)
         this.originSide = "right"
-
-
     }
-
-    drawObstHorizontal() {
-        console.log("segunda")
-        this.setSizeHorizontal()
-
-        this.ctx.drawImage(this.imageInstance, this.canvasWidth - 650, this.canvasHeight - 300, this.obstSize.w, this.obstSize.h)
+    //--------------------------------------------
+    //Como puedo llamar a this.originSide en el argumento de setSize?
+    //---------------------------------------------
+    drawObst() {
+        setSizeObst(this.originSide)
+        this.ctx.drawImage(this.imageInstance, this.obsStartingPoint.w, this.obsStartingPoint.y, this.obstSize.w, this.obstSize.h)
         console.log(this.canvasHeight)
+
     }
+
+
 
 }
 class ObsFromLeft extends Obstacles {
-    constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize) {
-        super(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize)
+    constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, obsStartingPoint, setSizeHorizontal) {
+        super(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, drawObst, obsStartingPoint, setSizeHorizontal)
         this.originSide = "left"
 
 
     }
-    drawObstHorizontal() {
-
-        this.setSizeHorizontal()
-
-
-        this.ctx.drawImage(this.imageInstance, this.canvasWidth - 650, this.canvasHeight - 300, this.obstSize.w, this.obstSize.h)
+    drawObst() {
+        setSizeObst(this.originSide)
+        this.ctx.drawImage(this.imageInstance, this.obsStartingPoint.w, this.obsStartingPoint.y, this.obstSize.w, this.obstSize.h)
         console.log(this.canvasHeight)
+
     }
 }
 class ObsFromTop extends Obstacles {
-    constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize) {
-        super(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize)
+    constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, obsStartingPoint, setSizeVertical) {
+        super(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, obsStartingPoint, setSizeVertical)
         this.originSide = "top"
 
 
     }
 
-    drawObstVertical() {
-
-        this.setSizeVertical()
-
-        this.ctx.drawImage(this.imageInstance, this.canvasWidth - 650, this.canvasHeight - 300, this.obstSize.w, this.obstSize.h)
+    drawObst() {
+        setSizeObst(this.originSide)
+        this.ctx.drawImage(this.imageInstance, this.obsStartingPoint.w, this.obsStartingPoint.y, this.obstSize.w, this.obstSize.h)
         console.log(this.canvasHeight)
+
     }
 
 }
 class ObsFromBottom extends Obstacles {
-    constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize) {
-        super(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize)
-        this.originSide = "right"
+    constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, obsStartingPoint, setSizeVertical) {
+        super(ctx, canvasSize, speed, canvasWidth, canvasHeight, obstMaxGap, obstMinGap, obstMinSize, obstMaxSize, obsStartingPoint, setSizeVertical)
+        this.originSide = "bottom"
 
 
     }
-    drawObstVertical() {
-
-        this.setSizeVertical()
-
-        this.ctx.drawImage(this.imageInstance, this.canvasWidth - 650, this.canvasHeight - 300, this.obstSize.w, this.obstSize.h)
+    drawObst() {
+        setSizeObst(this.originSide)
+        this.ctx.drawImage(this.imageInstance, this.obsStartingPoint.w, this.obsStartingPoint.y, this.obstSize.w, this.obstSize.h)
         console.log(this.canvasHeight)
+
     }
 
 }
