@@ -1,1 +1,1 @@
-window.onload = () => Game.init("canvasGame") // De momento.
+//window.onload = () => Game.init("canvasGame") // De momento.
