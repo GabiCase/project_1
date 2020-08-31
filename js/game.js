@@ -20,9 +20,9 @@ const Game = {
     score: 0,
     speed: 1,
     imgPlayerSrc: 'octop.jpg',
-    imgObstSrc: 'fish.jpg',
+    imgObstSrc: ['fish.jpg'],
     imgBackSrc: 'backg.jpg',
-    imgRewrdSrc: 'reward.jpg',
+    imgRewrdSrc: ['reward.jpg'],
 
 
     width: undefined,
@@ -50,20 +50,18 @@ const Game = {
         this.canvasDom.width = this.width;
         this.canvasDom.height = this.height;
     },
-    //ya desde aquí comenzariamos a instanciar y invocar a los diferentes metodos
+
     startGame() {
 
         this.player = new Player(this.ctx, this.canvasSize, this.keys, this.speed, this.width, this.height, this.imgPlayerSrc)
-        this.obstacles = new Obstacle(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc)
+        this.obstacle = new Obstacle(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc)
         this.background = new Background(this.ctx, this.canvasSize, this.background, this.speed, this.width, this.height, this.imgBackSrc)
         this.reward = new Rewards(this.ctx, this.canvasSize, this.reward, this.speed, this.width, this.height, this.player, this.imgRewrdSrc)
         this.interval = setInterval(() => {
-            this.obstaclesArray.forEach(obstacle => obstacle.drawObst())
+            //this.obstaclesArray.forEach(obstacle => obstacle.drawObst())
             this.clearCanvas()
             this.drawAll()
             this.player.setEvents()
-
-
 
 
             this.framesCounter > 500 ? this.framesCounter = 0 : this.framesCounter++
@@ -72,7 +70,8 @@ const Game = {
         }, 500)
         //-------------------------------
         // aquí en los FPS y el setInterval hay cosas que no entendemos, 
-        // controla la velocidad del juego, y qué más?
+        // controla la velocidad del juego, y cada cuánto salen los obstáclos,
+        //y qué más ? Y cómo se establece? Simplemente aumenta 60 cada  segundo?
         //-------------------------------
 
 
@@ -81,26 +80,65 @@ const Game = {
 
     },
 
-    createObstacle() {
-        this.obstacle.push(new ObsFromRight(this.ctx,
-            this.speed,
-            this.canvasWidth,
-            this.canvasHeight,
-            obstMaxGap,
-            obstMinGap,
-            obstMinSize,
-            obstMaxSize,
-            obsStartingPoint,
-            setSizeHorizontal))
+    // createObstacles() {
+    //     // dudas con esto!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //     //
 
-    }
+    //     //From Right
+    //     this.obstacle.push(new Obstacle(this.ctx,
+    //         this.speed,
+    //         this.canvasWidth,
+    //         this.canvasHeight,
+    //         obstMaxGap,
+    //         obstMinGap,
+    //         obstMinSize,
+    //         obstMaxSize,
+    //         obsStartingPoint,
+    //         setSizeHorizontal))
+
+    //     //From Left
+    //     this.obstacle.push(new Obstacle(this.ctx,
+    //         this.speed,
+    //         this.canvasWidth,
+    //         this.canvasHeight,
+    //         obstMaxGap,
+    //         obstMinGap,
+    //         obstMinSize,
+    //         obstMaxSize,
+    //         obsStartingPoint,
+    //         setSizeHorizontal))
+
+    //     //From top
+    //     this.obstacle.push(new Obstacle(this.ctx,
+    //         this.speed,
+    //         this.canvasWidth,
+    //         this.canvasHeight,
+    //         obstMaxGap,
+    //         obstMinGap,
+    //         obstMinSize,
+    //         obstMaxSize,
+    //         obsStartingPoint,
+    //         setSizeHorizontal))
+
+    //     //From bottom
+    //     this.obstacle.push(new Obstacle(this.ctx,
+    //         this.speed,
+    //         this.canvasWidth,
+    //         this.canvasHeight,
+    //         obstMaxGap,
+    //         obstMinGap,
+    //         obstMinSize,
+    //         obstMaxSize,
+    //         obsStartingPoint,
+    //         setSizeHorizontal))
+
+    // },
 
     drawAll() {
         this.background.drawBack()
         this.player.drawPlayer()
-        obstacle.drawObst()
+        this.obstacle.drawObst()
         this.reward.drawRewrd()
-
     },
 
     clearCanvas() {
@@ -108,4 +146,6 @@ const Game = {
     }
 }
 
+
+//esto está aquí para ir probándolo, luego hay que meterlo en index.js
 Game.initGame()

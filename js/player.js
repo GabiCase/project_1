@@ -37,7 +37,8 @@ class Player {
 
 
     setEvents() {
-
+        //En algún momento podríamos mirar si usar dos flechas a la vez
+        //para hacer un mov más diagonal
 
 
         document.addEventListener("keydown", event => {
@@ -63,7 +64,8 @@ class Player {
 
 
     move(direction) {
-        // hay que cambiar a -= 1 o --, pero no sé aún cómo se relaciona
+        // hay que cambiar a -= 1 o -- Pero lo intenté yo y dejaba de funcionar
+        //Además se mueve demasiado rápido y a saltos, (speed, fps, frames counter?)
 
         if (direction === "left") {
             this.playerPos.x > 0 ? this.playerPos.x = this.playerPos.x - 1 : null

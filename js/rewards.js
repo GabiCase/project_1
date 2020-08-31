@@ -18,8 +18,6 @@ class Rewards {
 
     drawRewrd() {
 
-        //para dibujar en canvas se usa ctx.drawImage()
-        //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth)
         this.ctx.drawImage(this.imageInstance, this.width - 200, this.height - 200, this.rewardSize.w, this.rewardSize.h)
 
     }
