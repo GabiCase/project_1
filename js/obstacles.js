@@ -55,6 +55,67 @@ class Obstacle {
             },
         }
     }
+    
+    // DIBUJAR TODOS LLAMA A DIBUJAR A CADA UNO
+    //ahora mismo se están dibujando en lugares aleatorios pegados al canvas 
+    //por fuera, por eso no se ven
+    drawObst() {
+        this.drawObstFromBottom()
+        this.drawObstFromLeft()
+        this.drawObstFromRight()
+        this.drawObstFromTop()
+    }
+    
+    
+    //FUNCIONES DE DIBUJAR DEPENDIENDO DEL ORIGEN
+    drawObstFromBottom() {
+        
+        this.ctx.drawImage(this.imageInstance, this.osbtPosition.bottom.x, this.osbtPosition.bottom.y, this.obstSize.vertical.w / 2, this.obstSize.vertical.h)
+        
+    }
+    
+    drawObstFromTop() {
+        
+        this.ctx.drawImage(this.imageInstance, this.osbtPosition.top.x, (this.osbtPosition.top.y) - (this.obstSize.vertical.h), this.obstSize.vertical.w / 2, this.obstSize.vertical.h)
+        
+    }
+    
+    drawObstFromRight() {
+        
+        this.ctx.drawImage(this.imageInstance, this.osbtPosition.right.x, this.osbtPosition.right.y, this.obstSize.horizontal.w, this.obstSize.horizontal.h / 2)
+        
+    }
+    
+    drawObstFromLeft() {
+        
+        this.ctx.drawImage(this.imageInstance, (this.osbtPosition.left.x) - (this.obstSize.horizontal.w), this.osbtPosition.left.y, this.obstSize.horizontal.w, this.obstSize.horizontal.h / 2)
+        
+    }
+    
+    moveObst() {
+        this.moveFromBottom()
+        this.moveFromTop()
+        this.moveFromRight()
+        this.moveFromLeft()
+    }
+    
+    moveFromBottom() {
+        this.osbtPosition.bottom.y -= this.speed
+    }
+    moveFromTop() {
+        this.osbtPosition.top.y += this.speed
+    }
+    moveFromLeft() {
+        this.osbtPosition.left.x += this.speed
+    }
+    moveFromRight() {
+        this.osbtPosition.right.x -= this.speed
+    }
+    
+    
+    
+    
+}
 
 
     //FUNCIONES PARA CONTROLAR EL TAMAÑO
@@ -97,42 +158,3 @@ class Obstacle {
     //     }
 
     // }
-
-    // DIBUJAR TODOS LLAMA A DIBUJAR A CADA UNO
-    //ahora mismo se están dibujando en lugares aleatorios pegados al canvas 
-    //por fuera, por eso no se ven
-    drawObst() {
-        this.drawObstFromBottom()
-        this.drawObstFromLeft()
-        this.drawObstFromRight()
-        this.drawObstFromTop()
-    }
-
-
-    //FUNCIONES DE DIBUJAR DEPENDIENDO DEL ORIGEN
-    drawObstFromBottom() {
-
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.bottom.x, this.osbtPosition.bottom.y, this.obstSize.vertical.w / 2, this.obstSize.vertical.h)
-
-    }
-
-    drawObstFromTop() {
-
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.top.x, (this.osbtPosition.top.y) - (this.obstSize.vertical.h), this.obstSize.vertical.w / 2, this.obstSize.vertical.h)
-
-    }
-
-    drawObstFromRight() {
-
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.right.x, this.osbtPosition.right.y, this.obstSize.horizontal.w, this.obstSize.horizontal.h / 2)
-
-    }
-
-    drawObstFromLeft() {
-
-        this.ctx.drawImage(this.imageInstance, (this.osbtPosition.left.x) - (this.obstSize.horizontal.w), this.osbtPosition.right.y, this.obstSize.horizontal.w, this.obstSize.horizontal.h / 2)
-
-    }
-
-
-}

@@ -71,7 +71,7 @@ class Player {
             this.playerPos.x > 0 ? this.playerPos.x = this.playerPos.x - 1 : null
         }
         if (direction === "right") {
-            this.playerPos.x < this.canvasWidth ? this.playerPos.x = this.playerPos.x + 1 : null
+            this.playerPos.x < this.canvasWidth - this.playerSize.w ? this.playerPos.x = this.playerPos.x + 1 : null
         }
         if (direction === "down") {
             this.playerPos.y < this.canvasWidth ? this.playerPos.y = this.playerPos.y + 1 : null
