@@ -15,16 +15,17 @@ const Game = {
     reward: undefined,
     rewardImgSrc: [],
     background: undefined,
+    obstacle: undefined,
     obstaclesArray: [],
     obstaclesImgSrc: [],
-    obstacleRate: [350, 400, 450],
+    obstacleRate: [400, 450, 500],
     randomRate: 0,
     framesCounter: 0,
     intervalId: undefined,
     score: 0,
     speed: 1,
     imgPlayerSrc: 'octop.jpg',
-    imgObstSrc: ['fish.jpg'],
+    imgObstSrc: ['pixil-frame-0 (1).png', 'fish.jpg'],
     imgBackSrc: 'backg.jpg',
     imgRewrdSrc: ['reward.jpg'],
 
@@ -62,105 +63,86 @@ const Game = {
     startGame() {
 
         this.player = new Player(this.ctx, this.canvasSize, this.keys, this.speed, this.width, this.height, this.imgPlayerSrc)
-
+        this.player.setEvents()
         this.background = new Background(this.ctx, this.canvasSize, this.background, this.speed, this.width, this.height, this.imgBackSrc)
         this.reward = new Rewards(this.ctx, this.canvasSize, this.reward, this.speed, this.width, this.height, this.player, this.imgRewrdSrc)
         this.interval = setInterval(() => {
-            //this.obstaclesArray.forEach(obstacle => obstacle.drawObst())
+
+            
+
             this.clearCanvas()
+
             this.createObstacles()
+
+            this.detectCollisionPlayerObst()
+
             this.drawAll()
+
             this.setFrames()
-            this.player.setEvents()
+
             this.obstaclesArray.forEach(elm => elm.moveObst())
-            this.move()
 
-
-
-            console.log(this.randomRate)
-            //this.framesTotal = this.framesTotal > 5000? this.framesTotal = 0 : this.framesTotal++
+            
+            //console.log(this.obstaclesArray)
 
 
         }, 1000 / this.FPS)
-        //-------------------------------
-        // aquí en los FPS y el setInterval hay cosas que no entendemos, 
-        // controla la velocidad del juego, y cada cuánto salen los obstáclos,
-        //y qué más ? Y cómo se establece? Simplemente aumenta 60 cada  segundo?
-        //-------------------------------
+
     },
-
-
-
-
-
-
-    // createObstacles() {
-    //     // dudas con esto!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //     //
-
-    //     //From Right
-    //     this.obstacle.push(new Obstacle(this.ctx,
-    //         this.speed,
-    //         this.canvasWidth,
-    //         this.canvasHeight,
-    //         obstMaxGap,
-    //         obstMinGap,
-    //         obstMinSize,
-    //         obstMaxSize,
-    //         obsStartingPoint,
-    //         setSizeHorizontal))
-
-    //     //From Left
-    //     this.obstacle.push(new Obstacle(this.ctx,
-    //         this.speed,
-    //         this.canvasWidth,
-    //         this.canvasHeight,
-    //         obstMaxGap,
-    //         obstMinGap,
-    //         obstMinSize,
-    //         obstMaxSize,
-    //         obsStartingPoint,
-    //         setSizeHorizontal))
-
-    //     //From top
-    //     this.obstacle.push(new Obstacle(this.ctx,
-    //         this.speed,
-    //         this.canvasWidth,
-    //         this.canvasHeight,
-    //         obstMaxGap,
-    //         obstMinGap,
-    //         obstMinSize,
-    //         obstMaxSize,
-    //         obsStartingPoint,
-    //         setSizeHorizontal))
-
-    //     //From bottom
-    //     this.obstacle.push(new Obstacle(this.ctx,
-    //         this.speed,
-    //         this.canvasWidth,
-    //         this.canvasHeight,
-    //         obstMaxGap,
-    //         obstMinGap,
-    //         obstMinSize,
-    //         obstMaxSize,
-    //         obsStartingPoint,
-    //         setSizeHorizontal))
-
-    // },
-
-
 
     createObstacles() {
 
         this.chooseRandomFrame(this.obstacleRate)
+        this.obstacle = new Obstacle(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc[Math.floor(Math.random() * this.imgObstSrc.length)])
         if (this.framesTotal % this.randomRate === 0) {
-            this.obstaclesArray.push(new Obstacle(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc))
+
+
+            this.obstaclesArray.push(this.obstacle)
         }
     },
 
     chooseRandomFrame(array) {
 
         return this.randomRate = array[Math.floor(Math.random() * array.length)]
+    },
+
+    detectCollisionPlayerObst() {
+
+        // this.player.playerPos.x < this.obstacle.osbtPosition.bottom.x + this.obstacle.obstSize.vertical.w &&
+        //     this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.bottom.x &&
+        //     this.player.playerPos.y < this.obstacle.osbtPosition.bottom.y + this.obstacle.obstSize.vertical.h &&
+        //     this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.bottom.y
+        // console.log("Botton y", this.obstacle.osbtPosition.bottom.y)
+        // console.log("Botton x", this.obstacle.osbtPosition.bottom.x)
+
+          //console.log("player y", this.player.playerPos.x)
+          //console.log("player x", this.player.playerPos.y)
+
+        if (this.player.playerPos.y < this.obstacle.osbtPosition.bottom.y + this.obstacle.obstSize.vertical.h &&
+            this.player.playerPos.y + this.player.playerSize.w > this.obstacle.osbtPosition.bottom.y &&
+            this.player.playerPos.x < this.obstacle.osbtPosition.bottom.x + this.obstacle.obstSize.vertical.h &&
+            this.player.playerPos.x + this.player.playerSize.h > this.obstacle.osbtPosition.bottom.x //||
+            // this.player.playerPos.x < this.obstacle.osbtPosition.top.x + this.obstacle.obstSize.vertical.w &&
+            // this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.top.x &&
+            // this.player.playerPos.y < this.obstacle.osbtPosition.top.y + this.obstacle.obstSize.vertical.h &&
+            // this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.top.y ||
+            // this.player.playerPos.x < this.obstacle.osbtPosition.left.x + this.obstacle.obstSize.horizontal.w &&
+            // this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.left.x &&
+            // this.player.playerPos.y < this.obstacle.osbtPosition.left.y + this.obstacle.obstSize.horizontal.h &&
+            // this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.left.y ||
+            // this.player.playerPos.x < this.obstacle.osbtPosition.right.x + this.obstacle.obstSize.horizontal.w &&
+            // this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.right.x &&
+            // this.player.playerPos.y < this.obstacle.osbtPosition.right.y + this.obstacle.obstSize.horizontal.h &&
+            // this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.right.y
+        ) {
+
+        console.log("colision")
+           
+            // The objects are touching
+        } else {
+           //console.log("NO")
+        }
+
     },
 
 

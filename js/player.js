@@ -60,26 +60,24 @@ class Player {
 
     }
 
-
-
-
     move(direction) {
         // hay que cambiar a -= 1 o -- Pero lo intenté yo y dejaba de funcionar
         //Además se mueve demasiado rápido y a saltos, (speed, fps, frames counter?)
+        this.speed = 5
+
 
         if (direction === "left") {
-            this.playerPos.x > 0 ? this.playerPos.x = this.playerPos.x - 1 : null
+            this.playerPos.x > 0 ? this.playerPos.x -= this.speed : null
         }
         if (direction === "right") {
-            this.playerPos.x < this.canvasWidth - this.playerSize.w ? this.playerPos.x = this.playerPos.x + 1 : null
+            this.playerPos.x < this.canvasWidth - this.playerSize.w ? this.playerPos.x  += this.speed : null
         }
         if (direction === "down") {
-            this.playerPos.y < this.canvasWidth ? this.playerPos.y = this.playerPos.y + 1 : null
+            this.playerPos.y < this.canvasWidth ? this.playerPos.y += this.speed : null
         }
         if (direction === "up") {
-            this.playerPos.y > 0 ? this.playerPos.y = this.playerPos.y - 1 : null
+            this.playerPos.y > 0 ? this.playerPos.y -= this.speed : null
         }
-
 
 
     }
