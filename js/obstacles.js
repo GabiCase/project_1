@@ -22,18 +22,15 @@ class Obstacle {
             h: 100
         }
         this.obstMinSize = {
-            w: 100,
-            h: 100
+            w: 90,
+            h: 90
         }
         this.obstSize = {
-            vertical: {
-                w: Math.floor(this.obstMinSize.w + Math.random() * (this.obstMaxSize.w)),
-                h: Math.floor(this.obstMinSize.h + Math.random() * (this.obstMaxSize.h))
-            },
-            horizontal: {
-                w: Math.floor(this.obstMinSize.w + Math.random() * (this.obstMaxSize.w)),
-                h: Math.floor(this.obstMinSize.h + Math.random() * (this.obstMaxSize.h))
-            }
+
+
+            w: Math.floor(this.obstMinSize.w + Math.random() * (this.obstMaxSize.w)),
+            h: Math.floor(this.obstMinSize.h + Math.random() * (this.obstMaxSize.h))
+
 
         }
         this.osbtPosition = {
@@ -61,9 +58,9 @@ class Obstacle {
     //por fuera, por eso no se ven
     drawObst() {
         this.drawObstFromBottom()
-        // this.drawObstFromLeft()
-        //this.drawObstFromRight()
-        // this.drawObstFromTop()
+        this.drawObstFromLeft()
+        this.drawObstFromRight()
+        this.drawObstFromTop()
     }
 
 
@@ -72,25 +69,25 @@ class Obstacle {
     //FUNCIONES DE DIBUJAR DEPENDIENDO DEL ORIGEN
     drawObstFromBottom() {
 
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.bottom.x, this.osbtPosition.bottom.y, this.obstSize.vertical.w, this.obstSize.vertical.h)
+        this.ctx.drawImage(this.imageInstance, this.osbtPosition.bottom.x, this.osbtPosition.bottom.y, this.obstSize.w, this.obstSize.h)
 
     }
 
     drawObstFromTop() {
 
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.top.x, (this.osbtPosition.top.y) - (this.obstSize.vertical.h), this.obstSize.vertical.w, this.obstSize.vertical.h)
+        this.ctx.drawImage(this.imageInstance, this.osbtPosition.top.x, (this.osbtPosition.top.y) - (this.obstSize.h), this.obstSize.w, this.obstSize.h)
 
     }
 
     drawObstFromRight() {
 
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.right.x, this.osbtPosition.right.y, this.obstSize.horizontal.w, this.obstSize.horizontal.h)
+        this.ctx.drawImage(this.imageInstance, this.osbtPosition.right.x, this.osbtPosition.right.y, this.obstSize.w, this.obstSize.h)
 
     }
 
     drawObstFromLeft() {
 
-        this.ctx.drawImage(this.imageInstance, (this.osbtPosition.left.x) - (this.obstSize.horizontal.w), this.osbtPosition.left.y, this.obstSize.horizontal.w, this.obstSize.horizontal.h)
+        this.ctx.drawImage(this.imageInstance, (this.osbtPosition.left.x) - (this.obstSize.w), this.osbtPosition.left.y, this.obstSize.w, this.obstSize.h)
 
     }
 
@@ -118,45 +115,3 @@ class Obstacle {
 
 
 }
-
-
-//FUNCIONES PARA CONTROLAR EL TAMAÑO
-
-// setLimitHorizontal() {
-//     this.obstMaxSize.w = 100
-//     this.obstMaxSize.h = 30
-//     this.obstMinSize.w = 80
-//     this.obstMinSize.h = 20
-// }
-// setLimitVertical() {
-//     this.obstMaxSize.w = 30
-//     this.obstMaxSize.h = 100
-//     this.obstMinSize.w = 20
-//     this.obstMinSize.h = 80
-// }
-
-
-// setSizeObst(originSide) {
-//     switch (originSide) {
-//         case this.originSide === "right":
-
-//             setLimitHorizontal();
-//             //como consecuencia:
-//             //   this.obstMaxSize.w = 100
-//             //   this.obstMaxSize.h = 30
-//             //   this.obstMinSize.w = 80
-//             //   this.obstMinSize.h = 20;
-//             break;
-//         case this.originSide === "left":
-//             setLimitHorizontal();
-//             break;
-//         case this.originSide === "top":
-//             setLimitVertical();
-//             break;
-//         case this.originSide === "bottom":
-//             setLimitVertical();
-//             break;
-
-//     }
-
-// }

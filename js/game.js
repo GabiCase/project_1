@@ -68,22 +68,22 @@ const Game = {
         this.reward = new Rewards(this.ctx, this.canvasSize, this.reward, this.speed, this.width, this.height, this.player, this.imgRewrdSrc)
         this.interval = setInterval(() => {
 
-            
+
 
             this.clearCanvas()
 
             this.createObstacles()
 
-            this.detectCollisionPlayerObst()
-
             this.drawAll()
 
             this.setFrames()
 
+            this.detectCollisionPlayerObst()
+
             this.obstaclesArray.forEach(elm => elm.moveObst())
 
-            
-            //console.log(this.obstaclesArray)
+
+
 
 
         }, 1000 / this.FPS)
@@ -93,12 +93,13 @@ const Game = {
     createObstacles() {
 
         this.chooseRandomFrame(this.obstacleRate)
-        this.obstacle = new Obstacle(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc[Math.floor(Math.random() * this.imgObstSrc.length)])
-        if (this.framesTotal % this.randomRate === 0) {
 
+        if (this.framesTotal % this.randomRate === 0) {
+            this.obstacle = new Obstacle(this.ctx, this.canvasSize, this.speed, this.width, this.height, this.imgObstSrc[Math.floor(Math.random() * this.imgObstSrc.length)])
 
             this.obstaclesArray.push(this.obstacle)
         }
+        console.log(this.obstacle.osbtPosition.bottom.y)
     },
 
     chooseRandomFrame(array) {
@@ -108,39 +109,33 @@ const Game = {
 
     detectCollisionPlayerObst() {
 
-        // this.player.playerPos.x < this.obstacle.osbtPosition.bottom.x + this.obstacle.obstSize.vertical.w &&
-        //     this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.bottom.x &&
-        //     this.player.playerPos.y < this.obstacle.osbtPosition.bottom.y + this.obstacle.obstSize.vertical.h &&
-        //     this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.bottom.y
-        // console.log("Botton y", this.obstacle.osbtPosition.bottom.y)
-        // console.log("Botton x", this.obstacle.osbtPosition.bottom.x)
 
-          //console.log("player y", this.player.playerPos.x)
-          //console.log("player x", this.player.playerPos.y)
 
-        if (this.player.playerPos.y < this.obstacle.osbtPosition.bottom.y + this.obstacle.obstSize.vertical.h &&
-            this.player.playerPos.y + this.player.playerSize.w > this.obstacle.osbtPosition.bottom.y &&
-            this.player.playerPos.x < this.obstacle.osbtPosition.bottom.x + this.obstacle.obstSize.vertical.h &&
-            this.player.playerPos.x + this.player.playerSize.h > this.obstacle.osbtPosition.bottom.x //||
-            // this.player.playerPos.x < this.obstacle.osbtPosition.top.x + this.obstacle.obstSize.vertical.w &&
-            // this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.top.x &&
-            // this.player.playerPos.y < this.obstacle.osbtPosition.top.y + this.obstacle.obstSize.vertical.h &&
-            // this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.top.y ||
-            // this.player.playerPos.x < this.obstacle.osbtPosition.left.x + this.obstacle.obstSize.horizontal.w &&
-            // this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.left.x &&
-            // this.player.playerPos.y < this.obstacle.osbtPosition.left.y + this.obstacle.obstSize.horizontal.h &&
-            // this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.left.y ||
-            // this.player.playerPos.x < this.obstacle.osbtPosition.right.x + this.obstacle.obstSize.horizontal.w &&
-            // this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.right.x &&
-            // this.player.playerPos.y < this.obstacle.osbtPosition.right.y + this.obstacle.obstSize.horizontal.h &&
-            // this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.right.y
+
+        if (this.player.playerPos.x < this.obstacle.osbtPosition.bottom.x + this.obstacle.obstSize.w &&
+            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.bottom.x &&
+            this.player.playerPos.y < this.obstacle.osbtPosition.bottom.y + this.obstacle.obstSize.h &&
+            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.bottom.y ||
+            this.player.playerPos.x < this.obstacle.osbtPosition.top.x + this.obstacle.obstSize.w &&
+            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.top.x &&
+            this.player.playerPos.y < this.obstacle.osbtPosition.top.y + this.obstacle.obstSize.h &&
+            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.top.y ||
+            this.player.playerPos.x < this.obstacle.osbtPosition.left.x + this.obstacle.obstSize.w &&
+            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.left.x &&
+            this.player.playerPos.y < this.obstacle.osbtPosition.left.y + this.obstacle.obstSize.h &&
+            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.left.y ||
+            this.player.playerPos.x < this.obstacle.osbtPosition.right.x + this.obstacle.obstSize.w &&
+            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.right.x &&
+            this.player.playerPos.y < this.obstacle.osbtPosition.right.y + this.obstacle.obstSize.h &&
+            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.right.y
         ) {
 
-        console.log("colision")
-           
-            // The objects are touching
+            console.log("colision : The objects are touching")
+
+
         } else {
-           //console.log("NO")
+
+
         }
 
     },
@@ -155,6 +150,10 @@ const Game = {
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.width, this.height);
+    }
+
+    clearArray() {
+        
     }
 
 }
