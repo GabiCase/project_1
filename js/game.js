@@ -4,13 +4,18 @@ const Game = {
     version: '1.0.0',
     author: 'Gabriela Casero & Melissa Meléndez Zamora',
     license: undefined,
-    canvasDom: undefined,
+    canvasDom: {
+        width: 0,
+        height: 0
+    },
     ctx: undefined,
     FPS: 60,
     framesTotal: 0,
     framesMax: 5000,
-    player: undefined,
-    counter: undefined,
+    canvasWidth: undefined,
+    canvasHeight: undefined,
+    player: this.player,
+    counter: 0,
     counterImgSrc: undefined,
     reward: undefined,
     rewardImgSrc: [],
@@ -19,6 +24,10 @@ const Game = {
     obstaclesArray: [],
     obstaclesImgSrc: [],
     obstacleRate: [400, 450, 500],
+    bottomPosition: undefined,
+    topPosition: undefined,
+    leftPosition: undefined,
+    rightPosition: undefined,
     randomRate: 0,
     framesCounter: 0,
     intervalId: undefined,
@@ -26,10 +35,8 @@ const Game = {
     speed: 1,
     imgPlayerSrc: 'octop.jpg',
     imgObstSrc: ['pixil-frame-0 (1).png', 'fish.jpg'],
-    imgBackSrc: 'backg.jpg',
+    imgBackSrc: ["background.png", "midground.png", "foregound-merged.png"],
     imgRewrdSrc: ['reward.jpg'],
-
-
     width: undefined,
     height: undefined,
     canvasReward: undefined,
@@ -64,11 +71,12 @@ const Game = {
 
         this.player = new Player(this.ctx, this.canvasSize, this.keys, this.speed, this.width, this.height, this.imgPlayerSrc)
         this.player.setEvents()
-        this.background = new Background(this.ctx, this.canvasSize, this.background, this.speed, this.width, this.height, this.imgBackSrc)
+        this.background = new Background(this.ctx, this.canvasSize, this.background, this.speed, this.width, this.height, this.imgBackSrc, this.player)
         this.reward = new Rewards(this.ctx, this.canvasSize, this.reward, this.speed, this.width, this.height, this.player, this.imgRewrdSrc)
+
         this.interval = setInterval(() => {
 
-
+            this.setScore()
 
             this.clearCanvas()
 
@@ -82,11 +90,15 @@ const Game = {
 
             this.obstaclesArray.forEach(elm => elm.moveObst())
 
+            //this.clearArray()
 
+            console.log(this.obstaclesArray.length)
 
 
 
         }, 1000 / this.FPS)
+
+        
 
     },
 
@@ -99,50 +111,78 @@ const Game = {
 
             this.obstaclesArray.push(this.obstacle)
         }
-        console.log(this.obstacle.osbtPosition.bottom.y)
+
     },
+
+
 
     chooseRandomFrame(array) {
 
         return this.randomRate = array[Math.floor(Math.random() * array.length)]
     },
 
+
     detectCollisionPlayerObst() {
+        this.obstaclesArray.forEach(elm => {
+
+            const oSize = elm.obstSize
+
+            const bottomPosition = elm.obstPosition.bottom
+            const topPosition = elm.obstPosition.top
+            const leftPosition = elm.obstPosition.left
+            const rightPosition = elm.obstPosition.right
+
+            const plaPos = this.player.playerPos
+            const plaSize = this.player.playerSize
 
 
+            if (plaPos.x < bottomPosition.x + oSize.w &&
+                plaPos.x + plaSize.w > bottomPosition.x &&
+                plaPos.y < bottomPosition.y + oSize.h &&
+                plaPos.y + plaSize.h > bottomPosition.y) {
+
+                this.loseGame()
+
+            } else if (
+
+                plaPos.x < topPosition.x + oSize.w &&
+                plaPos.x + plaSize.w > topPosition.x &&
+                plaPos.y < topPosition.y + oSize.h &&
+                plaPos.y + plaSize.h > topPosition.y) {
+
+                this.loseGame()
+
+            } else if (
+
+                plaPos.x < leftPosition.x + oSize.w &&
+                plaPos.x + plaSize.w > leftPosition.x &&
+                plaPos.y < leftPosition.y + oSize.h &&
+                plaPos.y + plaSize.h > leftPosition.y) {
 
 
-        if (this.player.playerPos.x < this.obstacle.osbtPosition.bottom.x + this.obstacle.obstSize.w &&
-            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.bottom.x &&
-            this.player.playerPos.y < this.obstacle.osbtPosition.bottom.y + this.obstacle.obstSize.h &&
-            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.bottom.y ||
-            this.player.playerPos.x < this.obstacle.osbtPosition.top.x + this.obstacle.obstSize.w &&
-            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.top.x &&
-            this.player.playerPos.y < this.obstacle.osbtPosition.top.y + this.obstacle.obstSize.h &&
-            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.top.y ||
-            this.player.playerPos.x < this.obstacle.osbtPosition.left.x + this.obstacle.obstSize.w &&
-            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.left.x &&
-            this.player.playerPos.y < this.obstacle.osbtPosition.left.y + this.obstacle.obstSize.h &&
-            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.left.y ||
-            this.player.playerPos.x < this.obstacle.osbtPosition.right.x + this.obstacle.obstSize.w &&
-            this.player.playerPos.x + this.player.playerSize.w > this.obstacle.osbtPosition.right.x &&
-            this.player.playerPos.y < this.obstacle.osbtPosition.right.y + this.obstacle.obstSize.h &&
-            this.player.playerPos.y + this.player.playerSize.h > this.obstacle.osbtPosition.right.y
-        ) {
+                this.loseGame()
 
-            console.log("colision : The objects are touching")
+            } else if (
 
+                plaPos.x < rightPosition.x + oSize.w &&
+                plaPos.x + plaSize.w > rightPosition.x &&
+                plaPos.y < rightPosition.y + oSize.h &&
+                plaPos.y + plaSize.h > rightPosition.y) {
 
-        } else {
+                this.loseGame()
 
-
-        }
-
+            }
+        })
     },
 
 
+
+
     drawAll() {
-        this.background.drawBack()
+        this.background.drawBackground()
+        this.background.drawMidground()
+        this.background.drawSand()
+
         this.player.drawPlayer()
         this.obstaclesArray.forEach(elm => elm.drawObst())
         this.reward.drawRewrd()
@@ -150,14 +190,113 @@ const Game = {
 
     clearCanvas() {
         this.ctx.clearRect(0, 0, this.width, this.height);
+    },
+
+    // clearArray() {
+
+    //     if (this.obstaclesArray[0].obstPosition.bottom.y +
+    //         this.obstaclesArray[0].obstSize.h < 0 &&
+    //         this.obstaclesArray[0].obstPosition.top.y >
+    //         this.canvasDom.height &&
+    //         this.obstaclesArray[0].obstPosition.left.x >
+    //         this.canvasDom.width &&
+    //         this.obstaclesArray[0].obstPosition.right.x +
+    //         this.obstaclesArray[0].obstSize.w < 0
+
+    //     ) {
+    //         this.obstaclesArray.pop()
+    //     }
+
+    // }
+
+
+    // clearArray() {
+
+    //     this.obstaclesArray.length >= 6 ? this.obstaclesArray.shift()  : null
+
+
+    // },
+
+
+
+    // this.obstaclesArray[0].forEach(elm => {
+
+
+    //     const oSize = elm.obstSize
+
+    //     const bottomPosition = elm.obstPosition.bottom
+    //     const topPosition = elm.obstPosition.top
+    //     const leftPosition = elm.obstPosition.left
+    //     const rightPosition = elm.obstPosition.right
+
+    //     if (
+
+    //         leftPosition.x > this.canvasDom.width ||
+    //         rightPosition.x + oSize < 0
+    //     ) {
+    //         this.obstaclesArray.pop()
+    //     }
+
+    // })
+
+
+
+
+    // // this.obstaclesArray.forEach(elm => {
+    // //     const oSize = elm.obstSize
+
+    // //     const bottomPosition = elm.obstPosition.bottom
+    // //     const topPosition = elm.obstPosition.top
+    // //     const leftPosition = elm.obstPosition.left
+    // //     const rightPosition = elm.obstPosition.right
+
+    // //     if (
+    // //         bottomPosition.y + oSize < 0 &&
+    // //         topPosition.y > this.canvasDom.height &&
+    // //         leftPosition.x > this.canvasDom.width &&
+    // //         rightPosition.x + oSize < 0
+    // //     ) {
+    // //         this.obstaclesArray.pop()
+    // //     }
+
+
+    // // })
+
+
+    stopGame() {
+        clearInterval(this.interval)
+    },
+
+    raiseScore() {
+
+        this.counter += 1
+        return console.log(`tienes ${this.counter} puntos`)
+
+    },
+
+    setScore() {
+
+        setInterval(
+
+            this.raiseScore(), 100
+        )
+
+    },
+
+    loseGame() {
+        this.stopGame()
+        //aquí tiene que salir algún mensaje
+        document.querySelector("end-message .lose")
+        //poner cuántos puntos has conseguido con innerHTML
+
+    },
+
+    backgroundParallax() {
+        this.player.plaPos.x
+
     }
 
-    clearArray() {
-        
-    }
 
 }
-
-
 //esto está aquí para ir probándolo, luego hay que meterlo en index.js
 Game.initGame()

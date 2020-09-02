@@ -33,17 +33,17 @@ class Obstacle {
 
 
         }
-        this.osbtPosition = {
+        this.obstPosition = {
             bottom: {
                 x: Math.floor(Math.random() * (this.canvasWidth)),
                 y: this.canvasHeight
             },
             top: {
                 x: Math.floor(Math.random() * (this.canvasWidth)),
-                y: 0
+                y: 0 - this.obstSize.h
             },
             left: {
-                x: 0,
+                x: 0 - this.obstSize.w,
                 y: Math.floor(Math.random() * (this.canvasHeight))
             },
             right: {
@@ -69,25 +69,25 @@ class Obstacle {
     //FUNCIONES DE DIBUJAR DEPENDIENDO DEL ORIGEN
     drawObstFromBottom() {
 
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.bottom.x, this.osbtPosition.bottom.y, this.obstSize.w, this.obstSize.h)
+        this.ctx.drawImage(this.imageInstance, this.obstPosition.bottom.x, this.obstPosition.bottom.y, this.obstSize.w, this.obstSize.h)
 
     }
 
     drawObstFromTop() {
 
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.top.x, (this.osbtPosition.top.y) - (this.obstSize.h), this.obstSize.w, this.obstSize.h)
+        this.ctx.drawImage(this.imageInstance, this.obstPosition.top.x, this.obstPosition.top.y, this.obstSize.w, this.obstSize.h)
 
     }
 
     drawObstFromRight() {
 
-        this.ctx.drawImage(this.imageInstance, this.osbtPosition.right.x, this.osbtPosition.right.y, this.obstSize.w, this.obstSize.h)
+        this.ctx.drawImage(this.imageInstance, this.obstPosition.right.x, this.obstPosition.right.y, this.obstSize.w, this.obstSize.h)
 
     }
 
     drawObstFromLeft() {
 
-        this.ctx.drawImage(this.imageInstance, (this.osbtPosition.left.x) - (this.obstSize.w), this.osbtPosition.left.y, this.obstSize.w, this.obstSize.h)
+        this.ctx.drawImage(this.imageInstance, this.obstPosition.left.x, this.obstPosition.left.y, this.obstSize.w, this.obstSize.h)
 
     }
 
@@ -99,16 +99,16 @@ class Obstacle {
     }
 
     moveFromBottom() {
-        this.osbtPosition.bottom.y -= this.speed
+        this.obstPosition.bottom.y -= this.speed
     }
     moveFromTop() {
-        this.osbtPosition.top.y += this.speed
+        this.obstPosition.top.y += this.speed
     }
     moveFromLeft() {
-        this.osbtPosition.left.x += this.speed
+        this.obstPosition.left.x += this.speed
     }
     moveFromRight() {
-        this.osbtPosition.right.x -= this.speed
+        this.obstPosition.right.x -= this.speed
     }
 
 

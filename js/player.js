@@ -41,7 +41,7 @@ class Player {
         //para hacer un mov más diagonal
 
 
-        document.addEventListener("keydown", event => {
+        document.addEventListener('keydown', event => {
             switch (event.keyCode) {
                 case this.keys.UP:
                     this.move("up");
@@ -61,16 +61,23 @@ class Player {
     }
 
     move(direction) {
-        // hay que cambiar a -= 1 o -- Pero lo intenté yo y dejaba de funcionar
-        //Además se mueve demasiado rápido y a saltos, (speed, fps, frames counter?)
-        this.speed = 5
+
+
+        this.speed = 6
 
 
         if (direction === "left") {
             this.playerPos.x > 0 ? this.playerPos.x -= this.speed : null
         }
+
+        // pendiente de mover en diagonal 
+
+        // if (direction === "left-up") {
+        //     this.playerPos.x > 0 && this.playerPos.y > 0 ? this.playerPos.x -= this.speed : null
+        // }
+
         if (direction === "right") {
-            this.playerPos.x < this.canvasWidth - this.playerSize.w ? this.playerPos.x  += this.speed : null
+            this.playerPos.x < this.canvasWidth - this.playerSize.w ? this.playerPos.x += this.speed : null
         }
         if (direction === "down") {
             this.playerPos.y < this.canvasWidth ? this.playerPos.y += this.speed : null
