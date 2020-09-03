@@ -38,7 +38,7 @@ class Background {
     }
     drawSand() {
 
-        this.ctx.drawImage(this.imageInstanceSand, -100 + (this.player.playerPos.x * 0.06), (-100 + this.canvasHeight / 2) + (this.player.playerPos.y * 0.06), this.canvasWidth + 200, this.canvasHeight / 2 + 200)
+        this.ctx.drawImage(this.imageInstanceSand, -100 + (this.player.playerPos.x * 0.06), (-100 + this.canvasHeight / 2) + (this.player.playerPos.y * 0.06), this.canvasWidth + 200, this.canvasHeight / 2 + 300)
     }
 }
 

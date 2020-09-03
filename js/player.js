@@ -43,15 +43,21 @@ class Player {
 
         document.addEventListener('keydown', event => {
             switch (event.keyCode) {
+                case this.keys.LEFT:
+                    this.move("left");
+                    break;
+                case this.keys.LEFT:
+                    this.keys.UP ? this.move("left-up") : null;
+                    break;
                 case this.keys.UP:
                     this.move("up");
                     break;
                 case this.keys.DOWN:
                     this.move("down");
                     break;
-                case this.keys.LEFT:
-                    this.move("left");
-                    break;
+                    //case this.keys.RIGHT && UP:
+                    //    this.move("right-up");
+                    //    break;
                 case this.keys.RIGHT:
                     this.move("right");
                     break;
@@ -70,11 +76,14 @@ class Player {
             this.playerPos.x > 0 ? this.playerPos.x -= this.speed : null
         }
 
-        // pendiente de mover en diagonal 
 
-        // if (direction === "left-up") {
-        //     this.playerPos.x > 0 && this.playerPos.y > 0 ? this.playerPos.x -= this.speed : null
-        // }
+        if (direction === "left-up") {
+            if (this.playerPos.x > 0 && this.playerPos.y > 0) {
+                this.playerPos.x -= this.speed
+                this.playerPos.y -= this.speed
+            }
+
+        }
 
         if (direction === "right") {
             this.playerPos.x < this.canvasWidth - this.playerSize.w ? this.playerPos.x += this.speed : null
