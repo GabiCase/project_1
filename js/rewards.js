@@ -15,8 +15,8 @@ class Reward {
             h: 50
         }
         this.rewaPosition = {
-            x: Math.floor(Math.random() * this.canvasWidth),
-            y: Math.floor(Math.random() * this.canvasHeight)
+            x: Math.floor(Math.random() * (this.canvasWidth - 50) + 50),
+            y: Math.floor(Math.random() * (this.canvasHeight - 50) + 50)
         }
     }
 

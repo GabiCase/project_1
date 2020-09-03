@@ -60,7 +60,7 @@ class Player {
 
         this.animate(framesCounter)
 
-        console.log(framesCounter)
+
 
     }
 

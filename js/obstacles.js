@@ -5,17 +5,23 @@ class Obstacle {
         this.speed = speed
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
-        // gap es la diferencia en segundos entre obstaculos,
-        //igual no es necesaria
-        this.obstMaxGap = 4
-        this.obstMinGap = 2
         this.imgObstSrc = imgObstSrc
         this.imageInstance = new Image()
-        this.imageInstance.src = `./images/${this.imgObstSrc}`
-        //Dentro de este array hay que hacer un push de un nuevo elemento
-        //cada X segundos, siendo X un espectro predefinido
+        this.imageInstance.src = `./sprites/${this.imgObstSrc}`
+        this.colorRate = [0, 3, 6, 9]
+        this.imageInstance.columns = 12 // No tocar
+        this.imageInstance.rows = 8 //No tocar
+        this.imageInstance.framesIndex = 0
+        this.imageInstance.frames = 3
+        this.imageInstance.framesY = 0
+        this.imageInstance.numeroColumnaBot = this.colorRate[Math.floor(Math.random() * this.colorRate.length)]
+        this.imageInstance.numeroColumnaTop = this.colorRate[Math.floor(Math.random() * this.colorRate.length)]
+        this.imageInstance.numeroColumnaLef = this.colorRate[Math.floor(Math.random() * this.colorRate.length)]
+        this.imageInstance.numeroColumnaRig = this.colorRate[Math.floor(Math.random() * this.colorRate.length)]
+        this.imageInstance.width = this.imageInstance.width
+        this.imageInstance.height = this.imageInstance.height
         this.obstacleArray = []
-        //
+
         this.obstSize = {
             w: canvasWidth / 10,
             h: canvasWidth / 10
@@ -39,28 +45,156 @@ class Obstacle {
             },
         }
     }
-    // DIBUJAR TODOS LLAMA A DIBUJAR A CADA UNO
-    //ahora mismo se están dibujando en lugares aleatorios pegados al canvas 
-    //por fuera, por eso no se ven
-    drawObst() {
-        this.drawObstFromBottom()
-        this.drawObstFromLeft()
-        this.drawObstFromRight()
-        this.drawObstFromTop()
+
+
+
+    drawObst(framesCounter) {
+        this.drawObstFromBottom(framesCounter)
+        //this.drawObstFromLeft(framesCounter)
+        //this.drawObstFromRight(framesCounter)
+        this.drawObstFromTop(framesCounter)
     }
-    //FUNCIONES DE DIBUJAR DEPENDIENDO DEL ORIGEN
-    drawObstFromBottom() {
-        this.ctx.drawImage(this.imageInstance, this.obstPosition.bottom.x, this.obstPosition.bottom.y, this.obstSize.w, this.obstSize.h)
+
+
+    drawObstFromBottom(framesCounter) {
+        const framesx = this.imageInstance.framesIndex
+        const sx = (this.imageInstance.width / this.imageInstance.columns * this.imageInstance.numeroColumnaBot) + framesx * (this.imageInstance.width / this.imageInstance.columns)
+        const sy = this.imageInstance.height / 8 * 3
+        const sWidth = this.imageInstance.width / this.imageInstance.columns
+        const sHeight = this.imageInstance.height / this.imageInstance.rows
+
+        this.ctx.drawImage(this.imageInstance,
+            sx,
+            sy,
+            sWidth,
+            sHeight,
+            this.obstPosition.bottom.x,
+            this.obstPosition.bottom.y,
+            this.obstSize.w,
+            this.obstSize.h)
+
+        this.animateBottom(framesCounter)
+
+
     }
-    drawObstFromTop() {
-        this.ctx.drawImage(this.imageInstance, this.obstPosition.top.x, this.obstPosition.top.y, this.obstSize.w, this.obstSize.h)
+
+    animateBottom(framesCounter) {
+
+        console.log(framesCounter)
+
+        if (framesCounter % 15 == 0) {
+            this.imageInstance.framesIndex++;
+
+        }
+        if (this.imageInstance.framesIndex > this.imageInstance.frames - 1) {
+            this.imageInstance.framesIndex = 0;
+        }
     }
-    drawObstFromRight() {
-        this.ctx.drawImage(this.imageInstance, this.obstPosition.right.x, this.obstPosition.right.y, this.obstSize.w, this.obstSize.h)
+    drawObstFromTop(framesCounter) {
+
+        const framesx = this.imageInstance.framesIndex
+        const sx = (this.imageInstance.width / this.imageInstance.columns * this.imageInstance.numeroColumnaTop) + framesx * (this.imageInstance.width / this.imageInstance.columns)
+        const sy = this.imageInstance.height / 8 * 0
+        const sWidth = this.imageInstance.width / this.imageInstance.columns
+        const sHeight = this.imageInstance.height / this.imageInstance.rows
+
+
+        this.ctx.drawImage(this.imageInstance,
+            sx,
+            sy,
+            sWidth,
+            sHeight,
+            this.obstPosition.top.x,
+            this.obstPosition.top.y,
+            this.obstSize.w,
+            this.obstSize.h)
+        this.animateTop(framesCounter)
     }
-    drawObstFromLeft() {
-        this.ctx.drawImage(this.imageInstance, this.obstPosition.left.x, this.obstPosition.left.y, this.obstSize.w, this.obstSize.h)
+    animateTop(framesCounter) {
+
+        console.log(framesCounter)
+
+        if (framesCounter % 15 == 0) {
+            this.imageInstance.framesIndex++;
+
+        }
+        if (this.imageInstance.framesIndex > this.imageInstance.frames - 1) {
+            this.imageInstance.framesIndex = 0;
+        }
     }
+
+    drawObstFromRight(framesCounter) {
+
+        const framesx = this.imageInstance.framesIndex
+        const sx = (this.imageInstance.width / this.imageInstance.columns * this.imageInstance.numeroColumnaRig) + framesx * (this.imageInstance.width / this.imageInstance.columns)
+        const sy = this.imageInstance.height / 8 * 1
+        const sWidth = this.imageInstance.width / this.imageInstance.columns
+        const sHeight = this.imageInstance.height / this.imageInstance.rows
+
+        this.ctx.drawImage(this.imageInstance,
+            sx,
+            sy,
+            sWidth,
+            sHeight,
+            this.obstPosition.right.x,
+            this.obstPosition.right.y,
+            this.obstSize.w,
+            this.obstSize.h)
+
+        this.animateRight(framesCounter)
+    }
+
+    animateRight(framesCounter) {
+
+        console.log(framesCounter)
+
+        if (framesCounter % 15 == 0) {
+            this.imageInstance.framesIndex++;
+
+        }
+        if (this.imageInstance.framesIndex > this.imageInstance.frames - 1) {
+            this.imageInstance.framesIndex = 0;
+        }
+    }
+
+    drawObstFromLeft(framesCounter) {
+
+        const framesx = this.imageInstance.framesIndex
+        const sx = (this.imageInstance.width / this.imageInstance.columns * this.imageInstance.numeroColumnaLef) + framesx * (this.imageInstance.width / this.imageInstance.columns)
+        const sy = this.imageInstance.height / 8 * 2
+        const sWidth = this.imageInstance.width / this.imageInstance.columns
+        const sHeight = this.imageInstance.height / this.imageInstance.rows
+
+
+
+        this.ctx.drawImage(this.imageInstance,
+            sx,
+            sy,
+            sWidth,
+            sHeight,
+            this.obstPosition.left.x,
+            this.obstPosition.left.y,
+            this.obstSize.w,
+            this.obstSize.h)
+
+        this.animateLeft(framesCounter)
+    }
+
+    animateLeft(framesCounter) {
+
+        console.log(framesCounter)
+
+        if (framesCounter % 15 == 0) {
+            this.imageInstance.framesIndex++;
+
+        }
+        if (this.imageInstance.framesIndex > this.imageInstance.frames - 1) {
+            this.imageInstance.framesIndex = 0;
+        }
+    }
+
+
+
     moveObst() {
         this.moveFromBottom()
         this.moveFromTop()
@@ -80,141 +214,3 @@ class Obstacle {
         this.obstPosition.right.x -= this.speed
     }
 }
-
-// class Obstacle {
-//     constructor(ctx, canvasSize, speed, canvasWidth, canvasHeight, imgObstSrc, framesTotal) {
-//         this.ctx = ctx
-//         this.canvasSize = canvasSize
-//         this.speed = speed
-//         this.canvasWidth = canvasWidth
-//         this.canvasHeight = canvasHeight
-
-//         this.framesTotal = framesTotal
-//         this.imageInstance = {
-//             frames: 4,
-//             framesIndex: 0
-//         }
-
-//         this.imgObstSrc = imgObstSrc
-//         this.imageInstanceLeft = new Image()
-//         this.imageInstanceRight = new Image()
-//         this.imageInstanceTop = new Image()
-//         this.imageInstanceBottom = new Image()
-//         this.imageInstanceLeft.src = `./sprites/${this.imgObstSrc[0]}`
-//         this.imageInstanceRight.src = `./sprites/${this.imgObstSrc[0]}`
-//         this.imageInstanceTop.src = `./sprites/${this.imgObstSrc[0]}`
-//         this.imageInstanceBottom.src = `./sprites/${this.imgObstSrc[0]}`
-
-
-//         this.obstacleArray = []
-
-
-//         this.obstSize = {
-//             w: canvasWidth / 10,
-//             h: canvasWidth / 10
-
-//         }
-
-//         this.obstPosition = {
-//             bottom: {
-//                 x: Math.floor(Math.random() * (this.canvasWidth)),
-//                 y: this.canvasHeight
-//             },
-//             top: {
-//                 x: Math.floor(Math.random() * (this.canvasWidth)),
-//                 y: 0 - this.obstSize.h
-//             },
-//             left: {
-//                 x: 0 - this.obstSize.w,
-//                 y: Math.floor(Math.random() * (this.canvasHeight))
-//             },
-//             right: {
-//                 x: this.canvasWidth,
-//                 y: Math.floor(Math.random() * (this.canvasHeight))
-//             },
-//         }
-//     }
-
-//     // DIBUJAR TODOS LLAMA A DIBUJAR A CADA UNO
-//     //ahora mismo se están dibujando en lugares aleatorios pegados al canvas 
-//     //por fuera, por eso no se ven
-//     drawObst() {
-//        // this.drawObstFromBottom()
-//         this.drawObstFromLeft()
-//        // this.drawObstFromRight()
-//        // this.drawObstFromTop()
-//     }
-
-
-
-
-//     //FUNCIONES DE DIBUJAR DEPENDIENDO DEL ORIGEN
-//     drawObstFromBottom() {
-
-//         this.ctx.drawImage(this.imageInstance, this.obstPosition.bottom.x, this.obstPosition.bottom.y, this.obstSize.w, this.obstSize.h)
-
-//     }
-
-//     drawObstFromTop() {
-
-//         this.ctx.drawImage(this.imageInstance, this.obstPosition.top.x, this.obstPosition.top.y, this.obstSize.w, this.obstSize.h)
-
-//     }
-
-//     drawObstFromRight() {
-
-//         this.ctx.drawImage(this.imageInstance, this.obstPosition.right.x, this.obstPosition.right.y, this.obstSize.w, this.obstSize.h)
-
-//     }
-
-//     drawObstFromLeft() {
-
-//         this.ctx.drawImage(
-//             this.imageInstanceLeft,
-//             this.imageInstanceLeft.framesIndex * Math.floor(this.imageInstanceLeft.width / this.imageInstanceLeft.frames),
-//             0,
-//             Math.floor(this.imageInstanceLeft.width / this.imageInstanceLeft.frames),
-//             this.imageInstanceLeft.height,
-//             this.obstPosition.left.x,
-//             this.obstPosition.left.y,
-//             this.obstSize.w,
-//             this.obstSize.h)
-
-
-
-//         this.animateLeft(this.framesTotal)
-//     }
-
-//     animateLeft(framesTotal) {
-//         if (framesTotal % 5 == 0) {
-//             this.imageInstanceLeft.framesIndex++;
-//         }
-//         if (this.imageInstanceLeft.framesIndex > this.imageInstance.frames - 1) {
-//             this.imageInstanceLeft.framesIndex = 0;
-//         }
-//     }
-
-//     moveObst() {
-//         this.moveFromBottom()
-//         this.moveFromTop()
-//         this.moveFromRight()
-//         this.moveFromLeft()
-//     }
-
-//     moveFromBottom() {
-//         this.obstPosition.bottom.y -= this.speed
-//     }
-//     moveFromTop() {
-//         this.obstPosition.top.y += this.speed
-//     }
-//     moveFromLeft() {
-//         this.obstPosition.left.x += this.speed
-//     }
-//     moveFromRight() {
-//         this.obstPosition.right.x -= this.speed
-//     }
-
-
-
-
-// }

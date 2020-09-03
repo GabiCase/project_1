@@ -39,9 +39,9 @@ const Game = {
     score: 0,
     speed: 1,
     imgPlayerSrc: 'muñeco.png',
-    imgObstSrc: ['pixil-frame-0 (1).png', 'fishGif.gif'],
+    imgObstSrc: ['peces1redon.png'],
     imgBackSrc: ["background.png", "midground.png", "foregound-merged.png"],
-    imgRewrdSrc: ['reward.jpg'],
+    imgRewrdSrc: ['reward.png'],
     width: undefined,
     height: undefined,
     canvasReward: undefined,
@@ -159,7 +159,7 @@ const Game = {
         this.background.drawSand()
 
         this.player.drawPlayer(this.framesTotal)
-        this.obstaclesArray.forEach(elm => elm.drawObst())
+        this.obstaclesArray.forEach(elm => elm.drawObst(this.framesTotal))
         this.rewardsArray.forEach(elm => elm.drawRewrd())
     },
 
