@@ -28,46 +28,36 @@ class Reward {
 
     }
 
-    addPoints() {
-        this.counter += 200
-        console.log(`tienes ${this.counter} puntos, deberían añadirse 200`)
-
-    }
-
-    notDie() {
-
+    addPoints(counter) {
+        return counter += 100
 
     }
 
 
+    increaseSpeed(player) {
 
-    //----------------------------------------------------
-    //     NO FUNCIONA LO DE SPEED DEL PLAYER
-    //----------------------------------------------------
-    increaseSpeed() {
+        player.speed += 3
 
-        this.player.speed += 2
-        setTimeout(this.player.speed - 2, 300)
-
-        console.log(`speed de ${this.player.speed} debería subir`)
-
+        setTimeout(() => player.speed -= 3, 10000)
 
     }
 
 
-    //----------------------------------------------------
-    //     TAMPOCO CONSIGO ACCEDER AL SIZE DEL PLAYER
-    //----------------------------------------------------
-    enlargePlayer() {
 
-        function getBig() {
-            this.player.playerSize.w + 20
-            this.player.playerSize.h + 20
-        }
-        setTimeout(getBig(), 300)
+    enlargePlayer(player) {
+
+        player.playerSize.w = player.playerSize.w + 20
+        player.playerSize.h = player.playerSize.h + 20
 
 
-        console.log(`Hacerse más grande`)
+
+        setTimeout(function () {
+            player.playerSize.w = player.playerSize.w - 20
+            player.playerSize.h = player.playerSize.h - 20
+        }, 10000)
+
+
+
     }
 
     //Tendrían en común la forma de aparecer, pero necesito clases que extiendan.

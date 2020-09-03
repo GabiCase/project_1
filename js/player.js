@@ -6,11 +6,23 @@ class Player {
         this.speed = 6
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
+
         this.sheetWidth = 0
-        this.sheetHeight = 0,
+        this.sheetHeight = 0
+
         this.imagePlayerSrc = imagePlayerSrc
         this.imageInstance = new Image()
-        this.imageInstance.src = `./images/${this.imagePlayerSrc}`
+        this.imageInstance.src = `./sprites/${this.imagePlayerSrc}`
+        this.imageInstance.frames = 4
+        this.imageInstance.framesY = 0
+        this.imageInstance.framesIndex = 0
+        this.imageInstance.rows = 4
+        this.imageInstance.columns = 4
+        this.imageInstance.width = this.imageInstance.width
+        this.imageInstance.height = this.imageInstance.height
+
+
+
         this.playerSize = {
             w: 90,
             h: 90
@@ -20,17 +32,47 @@ class Player {
             y: this.canvasHeight / 2 - this.playerSize.h / 2
         }
 
-        // Creamos una instancia de imagen PARAA QUE
 
     }
 
+    changeDirection(framesY) {
+        this.imageInstance.framesY = framesY
 
-    drawPlayer() {
+    }
 
-        //para dibujar en canvas se usa ctx.drawImage()
-        //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth)
-        this.ctx.drawImage(this.imageInstance, this.playerPos.x, this.playerPos.y, this.playerSize.w, this.playerSize.h)
+    drawPlayer(framesCounter) {
+        const framesx = this.imageInstance.framesIndex
+        const framesy = this.imageInstance.framesY
+        const sx = framesx * Math.floor(this.imageInstance.width / this.imageInstance.frames)
+        const sy = framesy * Math.floor(this.imageInstance.height / this.imageInstance.rows)
+        const sWidth = this.imageInstance.width / this.imageInstance.frames
+        const sHeight = this.imageInstance.height / this.imageInstance.frames
 
+        this.ctx.drawImage(this.imageInstance,
+            sx,
+            sy,
+            sWidth,
+            sHeight,
+            this.playerPos.x,
+            this.playerPos.y,
+            this.playerSize.w,
+            this.playerSize.h)
+
+        this.animate(framesCounter)
+
+        console.log(framesCounter)
+
+    }
+
+    animate(framesCounter) {
+
+
+        if (framesCounter % 15 == 0) {
+            this.imageInstance.framesIndex++;
+        }
+        if (this.imageInstance.framesIndex > this.imageInstance.frames - 1) {
+            this.imageInstance.framesIndex = 0;
+        }
     }
 
 
@@ -47,21 +89,26 @@ class Player {
             switch (event.keyCode) {
                 case this.keys.LEFT:
                     this.move("left", this.speed);
+                    this.changeDirection(1)
                     break;
                     // case this.keys.LEFT:
                     //     this.keys.UP ? this.move("left-up",speed) : null;
                     //     break;
                 case this.keys.UP:
                     this.move("up", this.speed);
+                    this.changeDirection(3)
                     break;
                 case this.keys.DOWN:
                     this.move("down", this.speed);
+                    this.changeDirection(0)
                     break;
                     //case this.keys.RIGHT && UP:
                     //    this.move("right-up");
                     //    break;
                 case this.keys.RIGHT:
                     this.move("right", this.speed);
+                    this.changeDirection(2)
+
                     break;
             }
         })
@@ -79,13 +126,13 @@ class Player {
         }
 
 
-        if (direction === "left-up") {
-            if (this.playerPos.x > 0 && this.playerPos.y > 0) {
-                this.playerPos.x -= this.speed
-                this.playerPos.y -= this.speed
-            }
+        // if (direction === "left-up") {
+        //     if (this.playerPos.x > 0 && this.playerPos.y > 0) {
+        //         this.playerPos.x -= this.speed
+        //         this.playerPos.y -= this.speed
+        //     }
 
-        }
+        // }
 
         if (direction === "right") {
             this.playerPos.x < this.canvasWidth - this.playerSize.w ? this.playerPos.x += this.speed : null
@@ -99,5 +146,7 @@ class Player {
 
 
     }
+
+
 
 }

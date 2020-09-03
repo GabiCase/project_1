@@ -21,6 +21,7 @@ const Game = {
     reward: undefined,
     rewardsArray: [],
     rewardImgSrc: [],
+    rewardInmortal: false,
     background: undefined,
     obstacle: undefined,
     obstaclesArray: [],
@@ -37,14 +38,17 @@ const Game = {
     intervalScore: undefined,
     score: 0,
     speed: 1,
-    imgPlayerSrc: 'octop.jpg',
+    imgPlayerSrc: 'muñeco.png',
     imgObstSrc: ['pixil-frame-0 (1).png', 'fishGif.gif'],
     imgBackSrc: ["background.png", "midground.png", "foregound-merged.png"],
     imgRewrdSrc: ['reward.jpg'],
     width: undefined,
     height: undefined,
     canvasReward: undefined,
+    // audio: {
+    //     start: new Audio("./audio/start.wav")
 
+    // },
     keys: {
         UP: 38,
         DOWN: 40,
@@ -68,7 +72,7 @@ const Game = {
     },
 
     setFrames() {
-        this.framesTotal > this.framesMax ? this.framesTotal = 0 : this.framesTotal++
+        this.framesTotal > this.framesMax ? this.framesTotal = 1 : this.framesTotal++
     },
 
     startGame() {
@@ -83,15 +87,13 @@ const Game = {
 
             this.clearCanvas()
 
-            this.createObstacles()
-
             this.createRewards()
 
             this.pruebaReward()
 
-            this.drawAll()
+            this.createObstacles()
 
-            this.setFrames()
+            this.drawAll()
 
             this.setScore()
 
@@ -100,6 +102,8 @@ const Game = {
             this.detectCollisionPlayerObst()
 
             this.clearArray()
+
+            this.setFrames()
 
             this.obstaclesArray.forEach(elm => elm.moveObst())
 
@@ -154,63 +158,68 @@ const Game = {
         this.background.drawMidground()
         this.background.drawSand()
 
-        this.player.drawPlayer()
+        this.player.drawPlayer(this.framesTotal)
         this.obstaclesArray.forEach(elm => elm.drawObst())
         this.rewardsArray.forEach(elm => elm.drawRewrd())
     },
 
     detectCollisionPlayerObst() {
 
-        this.obstaclesArray.forEach(elm => {
+        if (!this.rewardInmortal) {
 
-            const oSize = elm.obstSize
+            this.obstaclesArray.forEach(elm => {
 
-            const bottomPosition = elm.obstPosition.bottom
-            const topPosition = elm.obstPosition.top
-            const leftPosition = elm.obstPosition.left
-            const rightPosition = elm.obstPosition.right
+                const oSize = elm.obstSize
 
-            const plaPos = this.player.playerPos
-            const plaSize = this.player.playerSize
+                const bottomPosition = elm.obstPosition.bottom
+                const topPosition = elm.obstPosition.top
+                const leftPosition = elm.obstPosition.left
+                const rightPosition = elm.obstPosition.right
 
-            if (plaPos.x < bottomPosition.x + oSize.w &&
-                plaPos.x + plaSize.w > bottomPosition.x &&
-                plaPos.y < bottomPosition.y + oSize.h &&
-                plaPos.y + plaSize.h > bottomPosition.y) {
+                const plaPos = this.player.playerPos
+                const plaSize = this.player.playerSize
 
-                this.loseGame()
+                if (plaPos.x < bottomPosition.x + oSize.w &&
+                    plaPos.x + plaSize.w > bottomPosition.x &&
+                    plaPos.y < bottomPosition.y + oSize.h &&
+                    plaPos.y + plaSize.h > bottomPosition.y) {
 
-            } else if (
+                    this.loseGame()
 
-                plaPos.x < topPosition.x + oSize.w &&
-                plaPos.x + plaSize.w > topPosition.x &&
-                plaPos.y < topPosition.y + oSize.h &&
-                plaPos.y + plaSize.h > topPosition.y) {
+                } else if (
 
-                this.loseGame()
+                    plaPos.x < topPosition.x + oSize.w &&
+                    plaPos.x + plaSize.w > topPosition.x &&
+                    plaPos.y < topPosition.y + oSize.h &&
+                    plaPos.y + plaSize.h > topPosition.y) {
 
-            } else if (
+                    this.loseGame()
 
-                plaPos.x < leftPosition.x + oSize.w &&
-                plaPos.x + plaSize.w > leftPosition.x &&
-                plaPos.y < leftPosition.y + oSize.h &&
-                plaPos.y + plaSize.h > leftPosition.y) {
+                } else if (
+
+                    plaPos.x < leftPosition.x + oSize.w &&
+                    plaPos.x + plaSize.w > leftPosition.x &&
+                    plaPos.y < leftPosition.y + oSize.h &&
+                    plaPos.y + plaSize.h > leftPosition.y) {
 
 
-                this.loseGame()
+                    this.loseGame()
 
-            } else if (
+                } else if (
 
-                plaPos.x < rightPosition.x + oSize.w &&
-                plaPos.x + plaSize.w > rightPosition.x &&
-                plaPos.y < rightPosition.y + oSize.h &&
-                plaPos.y + plaSize.h > rightPosition.y) {
+                    plaPos.x < rightPosition.x + oSize.w &&
+                    plaPos.x + plaSize.w > rightPosition.x &&
+                    plaPos.y < rightPosition.y + oSize.h &&
+                    plaPos.y + plaSize.h > rightPosition.y) {
 
-                this.loseGame()
+                    this.loseGame()
 
-            }
-        })
+                }
+            })
+        }
     },
+
+
 
     pruebaReward() {
         const plaPos = this.player.playerPos
@@ -227,30 +236,30 @@ const Game = {
 
             if (randomNum >= 4) {
 
-                this.reward.addPoints()
+                this.counter = this.reward.addPoints(this.counter)
                 this.disappearReward()
                 this.writePlusPoints()
 
-                //setTimeout(this.writePlusPoints(), 60)
+                //this.writePlusPoints()
 
-                console.log("points", this.reward.counter)
-            } else if (randomNum >= 4) {
-                this.reward.notDie()
+
+            } else if (randomNum >= 3) {
+
+                this.rewardInmortal = true
+
+                setTimeout(() => this.rewardInmortal = false, 10000)
+
                 this.disappearReward()
-                console.log("speed")
+
             } else if (randomNum >= 2) {
-                this.reward.increaseSpeed()
+                this.reward.increaseSpeed(this.player)
                 this.disappearReward()
-                console.log("speed")
+
             } else {
-                this.reward.enlargePlayer()
+                this.reward.enlargePlayer(this.player)
                 this.disappearReward()
                 console.log("player")
             }
-
-
-
-
         }
 
 
