@@ -23,7 +23,15 @@ class Background {
 
 
     }
+
     drawBackground() {
+        this.drawBackgroundFixed()
+        this.drawMidground()
+        this.drawSand()
+    }
+
+
+    drawBackgroundFixed() {
 
         //para dibujar en canvas se usa ctx.drawImage()
         //drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth)

@@ -17,19 +17,12 @@ class Obstacle {
         //cada X segundos, siendo X un espectro predefinido
         this.obstacleArray = []
         //
-        this.obstMaxSize = {
-            w: 100,
-            h: 100
-        }
-        this.obstMinSize = {
-            w: 90,
-            h: 90
-        }
+      
         this.obstSize = {
 
 
-            w: Math.floor(this.obstMinSize.w + Math.random() * (this.obstMaxSize.w)),
-            h: Math.floor(this.obstMinSize.h + Math.random() * (this.obstMaxSize.h))
+            w: canvasWidth / 10,
+            h: canvasWidth / 10
 
 
         }

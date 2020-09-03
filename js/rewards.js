@@ -21,6 +21,7 @@ class Reward {
     }
 
     drawRewrd() {
+
         console.log()
 
         this.ctx.drawImage(this.imageInstance, this.rewaPosition.x, this.rewaPosition.y, this.rewardSize.w, this.rewardSize.h)
@@ -34,17 +35,17 @@ class Reward {
     }
 
     notDie() {
-    
-        this.game.detectCollisionPlayerObst()
-   
-    console.log(`tienes ${this.counter} puntos, deberían añadirse 200`)
 
-}
 
-//----------------------------------------------------
+    }
+
+
+
+    //----------------------------------------------------
     //     NO FUNCIONA LO DE SPEED DEL PLAYER
-//----------------------------------------------------
+    //----------------------------------------------------
     increaseSpeed() {
+
         this.player.speed += 2
         setTimeout(this.player.speed - 2, 300)
 
@@ -54,13 +55,19 @@ class Reward {
     }
 
 
-//----------------------------------------------------
-//     TAMPOCO CONSIGO ACCEDER AL SIZE DEL PLAYER
-//----------------------------------------------------
+    //----------------------------------------------------
+    //     TAMPOCO CONSIGO ACCEDER AL SIZE DEL PLAYER
+    //----------------------------------------------------
     enlargePlayer() {
-        this.player.playerSize.w + 20
-        this.player.playerSize.h + 20
-console.log(`Hacerse más grande`)
+
+        function getBig() {
+            this.player.playerSize.w + 20
+            this.player.playerSize.h + 20
+        }
+        setTimeout(getBig(), 300)
+
+
+        console.log(`Hacerse más grande`)
     }
 
     //Tendrían en común la forma de aparecer, pero necesito clases que extiendan.

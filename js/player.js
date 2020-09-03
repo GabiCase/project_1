@@ -3,15 +3,17 @@ class Player {
         this.ctx = ctx
         this.canvasSize = canvasSize
         this.keys = keys
-        this.speed = speed
+        this.speed = 6
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
+        this.sheetWidth = 0
+        this.sheetHeight = 0,
         this.imagePlayerSrc = imagePlayerSrc
         this.imageInstance = new Image()
         this.imageInstance.src = `./images/${this.imagePlayerSrc}`
         this.playerSize = {
-            w: 100,
-            h: 100
+            w: 90,
+            h: 90
         }
         this.playerPos = {
             x: this.canvasWidth / 2 - this.playerSize.w / 2,
@@ -44,32 +46,32 @@ class Player {
         document.addEventListener('keydown', event => {
             switch (event.keyCode) {
                 case this.keys.LEFT:
-                    this.move("left");
+                    this.move("left", this.speed);
                     break;
-                case this.keys.LEFT:
-                    this.keys.UP ? this.move("left-up") : null;
-                    break;
+                    // case this.keys.LEFT:
+                    //     this.keys.UP ? this.move("left-up",speed) : null;
+                    //     break;
                 case this.keys.UP:
-                    this.move("up");
+                    this.move("up", this.speed);
                     break;
                 case this.keys.DOWN:
-                    this.move("down");
+                    this.move("down", this.speed);
                     break;
                     //case this.keys.RIGHT && UP:
                     //    this.move("right-up");
                     //    break;
                 case this.keys.RIGHT:
-                    this.move("right");
+                    this.move("right", this.speed);
                     break;
             }
         })
 
     }
 
-    move(direction) {
+    move(direction, speed) {
 
 
-        this.speed = 6
+        this.speed = speed
 
 
         if (direction === "left") {

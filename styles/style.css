@@ -1,10 +1,58 @@
 body {
     padding: 0;
     margin: 0;
+    position: relative;
+    background-image: url(/images/background.png);
+    background-repeat: no-repeat center center;
+    background-size: cover;
+
+}
+
+header {
+
+    position: absolute;
+    text-align: center;
+    top: 15%;
+    left: 30%;
+    padding: 0;
+    margin-bottom: 0;
+
+}
+
+h1 {
+
+    color: white;
+    font-family: 'Alata';
+    font-size: 10vh;
+    text-shadow: 2px 2px 0 #4074b5,
+        3px -3px 0 #4074b5,
+        -3px 3px 0 #4074b5,
+        -3px -3px 0 #4074b5,
+        3px 3px 0 #4074b5,
+        3px 3px 0 #4074b5,
+        -3px 0px 0 #4074b5,
+        0px -3px 0 #4074b5,
+        2px 3px 0px rgba(3, 60, 76, 0.34);
+
+}
+
+button {
+    font-family: 'Alata';
+    font-weight: bold;
+    font-size: 25px;
+    color: #4074b5;
+    padding: 20px 60px;
+    justify-content: center;
+    border: none;
+    background-color: white;
+    border-radius: 9px;
+    margin-top: -50px;
+    text-transform: uppercase;
+
 }
 
 #myCanvas {
     /* Para ver dónde está de momento tiene background-color */
-    background-color: thistle;
+    
 
 }

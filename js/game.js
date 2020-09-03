@@ -77,14 +77,6 @@ const Game = {
         this.player.setEvents()
         this.background = new Background(this.ctx, this.canvasSize, this.background, this.speed, this.width, this.height, this.imgBackSrc, this.player)
 
-
-        this.intervalScore = setInterval(() => {
-
-            this.setScore()
-
-        }, 20000 / this.FPS)
-
-
         this.interval = setInterval(() => {
 
 
@@ -100,6 +92,8 @@ const Game = {
             this.drawAll()
 
             this.setFrames()
+
+            this.setScore()
 
             this.writeScore()
 
@@ -235,7 +229,11 @@ const Game = {
 
                 this.reward.addPoints()
                 this.disappearReward()
-                console.log("points")
+                this.writePlusPoints()
+
+                //setTimeout(this.writePlusPoints(), 60)
+
+                console.log("points", this.reward.counter)
             } else if (randomNum >= 4) {
                 this.reward.notDie()
                 this.disappearReward()
@@ -244,10 +242,7 @@ const Game = {
                 this.reward.increaseSpeed()
                 this.disappearReward()
                 console.log("speed")
-            }
-            
-            
-            else {
+            } else {
                 this.reward.enlargePlayer()
                 this.disappearReward()
                 console.log("player")
@@ -259,6 +254,15 @@ const Game = {
         }
 
 
+    },
+
+    writePlusPoints() {
+        this.ctx.font = "30px  Alata"
+        this.ctx.fillStyle = "white"
+        this.ctx.shadowColor = "black"
+        this.ctx.shadowBlur = 7;
+        this.ctx.fillText("+ 200", 20, 80)
+        this.ctx.shadowBlur = 0
     },
 
     disappearReward() {
@@ -296,21 +300,12 @@ const Game = {
         clearInterval(this.intervalScore)
     },
 
-    raiseScore() {
-
-        this.counter += 1
-
-
-    },
-
     setScore() {
 
-        setInterval(
-
-            this.raiseScore(), 100
-        )
+        this.framesTotal % 20 === 0 ? this.counter += 1 : null
 
     },
+
 
     setLoseMessage() {
 
@@ -348,4 +343,3 @@ const Game = {
 
 }
 //esto está aquí para ir probándolo, luego hay que meterlo en index.js
-Game.initGame()

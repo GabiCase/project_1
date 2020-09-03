@@ -1,1 +1,3 @@
-//window.onload = () => Game.init("canvasGame") // De momento.
+
+
+document.querySelector("#star-btn").onclick = () => Game.init()
