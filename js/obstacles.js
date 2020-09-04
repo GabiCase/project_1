@@ -18,8 +18,8 @@ class Obstacle {
         this.imageInstance.numeroColumnaTop = this.colorRate[Math.floor(Math.random() * this.colorRate.length)]
         this.imageInstance.numeroColumnaLef = this.colorRate[Math.floor(Math.random() * this.colorRate.length)]
         this.imageInstance.numeroColumnaRig = this.colorRate[Math.floor(Math.random() * this.colorRate.length)]
-        this.imageInstance.width = this.imageInstance.width
-        this.imageInstance.height = this.imageInstance.height
+        this.imageInstance.width = 576
+        this.imageInstance.height = 384
         this.obstacleArray = []
 
         this.obstSize = {
@@ -50,8 +50,8 @@ class Obstacle {
 
     drawObst(framesCounter) {
         this.drawObstFromBottom(framesCounter)
-        //this.drawObstFromLeft(framesCounter)
-        //this.drawObstFromRight(framesCounter)
+        this.drawObstFromLeft(framesCounter)
+        this.drawObstFromRight(framesCounter)
         this.drawObstFromTop(framesCounter)
     }
 

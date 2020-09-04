@@ -22,6 +22,7 @@ const Game = {
     rewardsArray: [],
     rewardImgSrc: [],
     rewardInmortal: false,
+    rewardText: "",
     background: undefined,
     obstacle: undefined,
     obstaclesArray: [],
@@ -84,12 +85,13 @@ const Game = {
         this.interval = setInterval(() => {
 
 
-
             this.clearCanvas()
 
             this.createRewards()
 
             this.pruebaReward()
+
+            this.writePlusPoints()
 
             this.createObstacles()
 
@@ -123,17 +125,6 @@ const Game = {
             this.reward = new Reward(this.ctx, this.width, this.height, this.reward, this.speed, this.player, this.imgRewrdSrc, this.counter)
             this.rewardsArray.push(this.reward)
         }
-
-
-
-
-        // this.chooseRandomFrame(this.rate)
-
-        // if (this.framesTotal % this.randomRate === 0) {
-        //     this.reward = new Reward(this.ctx, this.canvasSize, this.reward, this.speed, this.player, this.imgRewrdSrc, this.counter)
-        //     this.rewardsArray.push(this.reward)
-        // }
-
     },
 
     createObstacles() {
@@ -169,7 +160,8 @@ const Game = {
 
             this.obstaclesArray.forEach(elm => {
 
-                const oSize = elm.obstSize
+                const oSizew = elm.obstSize.w / 2
+                const oSizeh = elm.obstSize.h / 2
 
                 const bottomPosition = elm.obstPosition.bottom
                 const topPosition = elm.obstPosition.top
@@ -177,40 +169,41 @@ const Game = {
                 const rightPosition = elm.obstPosition.right
 
                 const plaPos = this.player.playerPos
-                const plaSize = this.player.playerSize
+                const plaSizeh = this.player.playerSize.h / 2.5
+                const plaSizew = this.player.playerSize.w
 
-                if (plaPos.x < bottomPosition.x + oSize.w &&
-                    plaPos.x + plaSize.w > bottomPosition.x &&
-                    plaPos.y < bottomPosition.y + oSize.h &&
-                    plaPos.y + plaSize.h > bottomPosition.y) {
-
-                    this.loseGame()
-
-                } else if (
-
-                    plaPos.x < topPosition.x + oSize.w &&
-                    plaPos.x + plaSize.w > topPosition.x &&
-                    plaPos.y < topPosition.y + oSize.h &&
-                    plaPos.y + plaSize.h > topPosition.y) {
+                if (plaPos.x < bottomPosition.x + oSizew &&
+                    plaPos.x + plaSizew > bottomPosition.x &&
+                    plaPos.y < bottomPosition.y + oSizeh &&
+                    plaPos.y + plaSizeh > bottomPosition.y) {
 
                     this.loseGame()
 
                 } else if (
 
-                    plaPos.x < leftPosition.x + oSize.w &&
-                    plaPos.x + plaSize.w > leftPosition.x &&
-                    plaPos.y < leftPosition.y + oSize.h &&
-                    plaPos.y + plaSize.h > leftPosition.y) {
+                    plaPos.x < topPosition.x + oSizew &&
+                    plaPos.x + plaSizew > topPosition.x &&
+                    plaPos.y < topPosition.y + oSizeh &&
+                    plaPos.y + plaSizeh > topPosition.y) {
+
+                    this.loseGame()
+
+                } else if (
+
+                    plaPos.x < leftPosition.x + oSizew &&
+                    plaPos.x + plaSizew > leftPosition.x &&
+                    plaPos.y < leftPosition.y + oSizeh &&
+                    plaPos.y + plaSizeh > leftPosition.y) {
 
 
                     this.loseGame()
 
                 } else if (
 
-                    plaPos.x < rightPosition.x + oSize.w &&
-                    plaPos.x + plaSize.w > rightPosition.x &&
-                    plaPos.y < rightPosition.y + oSize.h &&
-                    plaPos.y + plaSize.h > rightPosition.y) {
+                    plaPos.x < rightPosition.x + oSizew &&
+                    plaPos.x + plaSizew > rightPosition.x &&
+                    plaPos.y < rightPosition.y + oSizeh &&
+                    plaPos.y + plaSizeh > rightPosition.y) {
 
                     this.loseGame()
 
@@ -237,27 +230,29 @@ const Game = {
             if (randomNum >= 4) {
 
                 this.counter = this.reward.addPoints(this.counter)
+                this.rewardText = "You won 100 points"
                 this.disappearReward()
-                this.writePlusPoints()
-
-                //this.writePlusPoints()
 
 
             } else if (randomNum >= 3) {
 
                 this.rewardInmortal = true
-
                 setTimeout(() => this.rewardInmortal = false, 10000)
-
+                this.rewardText = "You are inmortal now"
                 this.disappearReward()
+     
 
             } else if (randomNum >= 2) {
                 this.reward.increaseSpeed(this.player)
+                this.rewardText = "You go way faster"
                 this.disappearReward()
+                
 
             } else {
                 this.reward.enlargePlayer(this.player)
+                this.rewardText = "You're bigger now"
                 this.disappearReward()
+                
                 console.log("player")
             }
         }
@@ -266,11 +261,13 @@ const Game = {
     },
 
     writePlusPoints() {
+
+
         this.ctx.font = "30px  Alata"
         this.ctx.fillStyle = "white"
         this.ctx.shadowColor = "black"
         this.ctx.shadowBlur = 7;
-        this.ctx.fillText("+ 200", 20, 80)
+        this.ctx.fillText(`${this.rewardText}`, this.canvasHeight/2, this.canvasWidth/2)
         this.ctx.shadowBlur = 0
     },
 
@@ -337,10 +334,6 @@ const Game = {
         this.ctx.shadowBlur = 7;
         this.ctx.fillText(`${this.counter}`, 20, 40)
         this.ctx.shadowBlur = 0
-
-        // this.ctx.font = "bold 480px serif"
-        // this.ctx.fillStyle = "white"
-        // this.ctx.fillText(`Score of ${this.counter}`, this.canvasWidth / 2, this.canvasHeight / 2)
 
     },
 

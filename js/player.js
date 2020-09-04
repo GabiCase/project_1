@@ -18,8 +18,8 @@ class Player {
         this.imageInstance.framesIndex = 0
         this.imageInstance.rows = 4
         this.imageInstance.columns = 4
-        this.imageInstance.width = this.imageInstance.width
-        this.imageInstance.height = this.imageInstance.height
+        this.imageInstance.width = 196
+        this.imageInstance.height = 190
 
 
 
