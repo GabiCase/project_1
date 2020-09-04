@@ -23,8 +23,8 @@ class Obstacle {
         this.obstacleArray = []
 
         this.obstSize = {
-            w: canvasWidth / 10,
-            h: canvasWidth / 10
+            w: 100,
+            h: 100
         }
         this.obstPosition = {
             bottom: {

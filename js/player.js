@@ -3,7 +3,7 @@ class Player {
         this.ctx = ctx
         this.canvasSize = canvasSize
         this.keys = keys
-        this.speed = 6
+        this.speed = speed
         this.canvasWidth = canvasWidth
         this.canvasHeight = canvasHeight
 
@@ -64,6 +64,10 @@ class Player {
 
     }
 
+    increaseSpeed(framesCounter) {
+        framesCounter % 10000 === 0 ? this.speed += 1 : null
+    }
+
     animate(framesCounter) {
 
 
@@ -73,6 +77,8 @@ class Player {
         if (this.imageInstance.framesIndex > this.imageInstance.frames - 1) {
             this.imageInstance.framesIndex = 0;
         }
+
+        this.increaseSpeed(framesCounter)
     }
 
 
@@ -83,7 +89,7 @@ class Player {
     setEvents() {
         //En algún momento podríamos mirar si usar dos flechas a la vez
         //para hacer un mov más diagonal
-
+        this.speed += 5
 
         document.addEventListener('keydown', event => {
             switch (event.keyCode) {

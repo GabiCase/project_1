@@ -16,6 +16,7 @@ const Game = {
     canvasWidth: undefined,
     canvasHeight: undefined,
     player: undefined,
+    gameOver: false,
     counter: 0,
     counterImgSrc: undefined,
     reward: undefined,
@@ -62,7 +63,16 @@ const Game = {
         this.canvasDom = document.getElementById("myCanvas")
         this.ctx = this.canvasDom.getContext("2d")
         this.setDimensions()
+        this.reset()
+
+    },
+
+    reset() {
+        this.obstaclesArray = []
+        this.score = 0
+        this.gameOver = false
         this.startGame()
+
 
     },
     setDimensions() {
@@ -76,6 +86,8 @@ const Game = {
         this.framesTotal > this.framesMax ? this.framesTotal = 1 : this.framesTotal++
     },
 
+
+
     startGame() {
 
         this.player = new Player(this.ctx, this.canvasSize, this.keys, this.speed, this.width, this.height, this.imgPlayerSrc)
@@ -85,13 +97,13 @@ const Game = {
         this.interval = setInterval(() => {
 
 
+            this.increaseSpeed()
+
             this.clearCanvas()
 
             this.createRewards()
 
             this.pruebaReward()
-
-            this.writePlusPoints()
 
             this.createObstacles()
 
@@ -106,6 +118,14 @@ const Game = {
             this.clearArray()
 
             this.setFrames()
+
+            this.writeRewards()
+
+            if (this.gameOver) {
+                this.gameOverScreen()
+                //this.rewardText = ""
+                console.log("muertooo")
+            }
 
             this.obstaclesArray.forEach(elm => elm.moveObst())
 
@@ -176,6 +196,7 @@ const Game = {
                     plaPos.x + plaSizew > bottomPosition.x &&
                     plaPos.y < bottomPosition.y + oSizeh &&
                     plaPos.y + plaSizeh > bottomPosition.y) {
+                    this.gameOver = true
 
                     this.loseGame()
 
@@ -185,7 +206,7 @@ const Game = {
                     plaPos.x + plaSizew > topPosition.x &&
                     plaPos.y < topPosition.y + oSizeh &&
                     plaPos.y + plaSizeh > topPosition.y) {
-
+                    this.gameOver = true
                     this.loseGame()
 
                 } else if (
@@ -195,7 +216,7 @@ const Game = {
                     plaPos.y < leftPosition.y + oSizeh &&
                     plaPos.y + plaSizeh > leftPosition.y) {
 
-
+                    this.gameOver = true
                     this.loseGame()
 
                 } else if (
@@ -204,7 +225,7 @@ const Game = {
                     plaPos.x + plaSizew > rightPosition.x &&
                     plaPos.y < rightPosition.y + oSizeh &&
                     plaPos.y + plaSizeh > rightPosition.y) {
-
+                    this.gameOver = true
                     this.loseGame()
 
                 }
@@ -240,19 +261,19 @@ const Game = {
                 setTimeout(() => this.rewardInmortal = false, 10000)
                 this.rewardText = "You are inmortal now"
                 this.disappearReward()
-     
+
 
             } else if (randomNum >= 2) {
                 this.reward.increaseSpeed(this.player)
                 this.rewardText = "You go way faster"
                 this.disappearReward()
-                
+
 
             } else {
                 this.reward.enlargePlayer(this.player)
                 this.rewardText = "You're bigger now"
                 this.disappearReward()
-                
+
                 console.log("player")
             }
         }
@@ -260,15 +281,18 @@ const Game = {
 
     },
 
-    writePlusPoints() {
-
-
-        this.ctx.font = "30px  Alata"
-        this.ctx.fillStyle = "white"
-        this.ctx.shadowColor = "black"
+    writeRewards() {
+        this.ctx.font = '20px  Alata'
+        this.ctx.fillStyle = 'white'
+        this.ctx.shadowColor = 'black'
         this.ctx.shadowBlur = 7;
-        this.ctx.fillText(`${this.rewardText}`, this.canvasHeight/2, this.canvasWidth/2)
+        this.ctx.fillText(`${this.rewardText}`, 20, 80)
         this.ctx.shadowBlur = 0
+
+        console.log(this.rewardText)
+
+        // setTimeout(() => this.rewardText = "", 5000)
+
     },
 
     disappearReward() {
@@ -282,19 +306,25 @@ const Game = {
 
     clearArray() {
 
-        if (this.obstaclesArray[0].obstPosition.bottom.y +
-            this.obstaclesArray[0].obstSize.h < 0 &&
-            this.obstaclesArray[0].obstPosition.top.y >
-            this.canvasDom.height &&
-            this.obstaclesArray[0].obstPosition.left.x >
-            this.canvasDom.width &&
-            this.obstaclesArray[0].obstPosition.right.x +
-            this.obstaclesArray[0].obstSize.w < 0
+        if (this.obstaclesArray[0] == undefined) {
+            this.createObstacles()
+        } else {
 
-        ) {
-            this.obstaclesArray.shift()
+
+
+            if (this.obstaclesArray[0].obstPosition.bottom.y +
+                this.obstaclesArray[0].obstSize.h < 0 &&
+                this.obstaclesArray[0].obstPosition.top.y >
+                this.canvasDom.height &&
+                this.obstaclesArray[0].obstPosition.left.x >
+                this.canvasDom.width &&
+                this.obstaclesArray[0].obstPosition.right.x +
+                this.obstaclesArray[0].obstSize.w < 0
+
+            ) {
+                this.obstaclesArray.shift()
+            }
         }
-
     }
 
     ,
@@ -312,6 +342,10 @@ const Game = {
 
     },
 
+    increaseSpeed() {
+        this.framesTotal % 5000 === 0 ? this.speed += .1 : null
+    },
+
 
     setLoseMessage() {
 
@@ -325,6 +359,7 @@ const Game = {
 
         this.stopGame()
 
+
     },
 
     writeScore() {
@@ -333,7 +368,26 @@ const Game = {
         this.ctx.shadowColor = "black"
         this.ctx.shadowBlur = 7;
         this.ctx.fillText(`${this.counter}`, 20, 40)
+
+
+    },
+
+
+    gameOverScreen() {
+
+        this.ctx.font = "40px  Alata"
+        this.ctx.fillStyle = "white"
+        this.ctx.shadowColor = "black"
+        this.ctx.shadowBlur = 7;
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(`GAME OVER`, this.width / 2, this.height / 2 - 40)
+        this.ctx.fillText(`Your score was ${this.counter}`, this.width / 2, this.height / 2)
         this.ctx.shadowBlur = 0
+
+        clearInterval(this.interval)
+
+
+        setTimeout(() => this.reset(), 5000)
 
     },
 
